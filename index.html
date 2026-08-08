@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>😂 موقع التريقة 😂</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(circle at top, #4c1d95, transparent 40%),
+                linear-gradient(135deg, #111827, #1e1b4b, #581c87);
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+        }
+
+        .box {
+            width: 90%;
+            max-width: 450px;
+
+            padding: 30px 20px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,0.45);
+
+            backdrop-filter: blur(12px);
+        }
+
+        .emoji {
+            font-size: 55px;
+
+            animation:
+                float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        h1 {
+            font-size: 34px;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 17px;
+            opacity: 0.9;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 16px;
+
+            margin: 15px 0;
+
+            border: none;
+            border-radius: 15px;
+
+            font-size: 18px;
+
+            text-align: center;
+
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 8px;
+
+            border: none;
+            border-radius: 15px;
+
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .again {
+            display: none;
+        }
+
+        .reset {
+            display: none;
+        }
+
+        #result {
+
+            margin-top: 25px;
+
+            min-height: 80px;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            line-height: 1.7;
+        }
+
+        .show {
+
+            animation: pop 0.55s ease;
+
+        }
+
+        @keyframes pop {
+
+            0% {
+                transform: scale(0.4) rotate(-3deg);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.08) rotate(2deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+
+        }
+
+        .small {
+            font-size: 13px;
+            opacity: 0.6;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="box">
+
+        <div class="emoji">
+            😂
+        </div>
+
+        <h1>
+            موقع التريقة
+        </h1>
+
+        <p>
+            اكتب اسمك وشوف الموقع محضرلك إيه 👀
+        </p>
+
+
+        <input
+            id="name"
+            type="text"
+            placeholder="اكتب اسمك هنا..."
+            autocomplete="off"
+        >
+
+
+        <button onclick="showResult()">
+
+            🔥 شوف الحكم 🔥
+
+        </button>
+
+
+        <button
+            class="again"
+            id="againButton"
+            onclick="anotherJoke()"
+        >
+
+            🎲 جملة تانية
+
+        </button>
+
+
+        <button
+            class="reset"
+            id="resetButton"
+            onclick="resetGame()"
+        >
+
+            🔄 ابدأ من جديد
+
+        </button>
+
+
+        <div id="result"></div>
+
+
+        <div class="small">
+            ⚠️ هزار أصحاب وبس 😂
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let currentName = "";
+
+
+        /*
+            جمل يارا الخاصة 😂
+        */
+
+        const yaraJokes = [
+
+            "يا يارا 😂 الموقع كان مستنيكي مخصوص... واضح إنك بتحبي تعرفي الناس بتقول عليكي إيه.",
+
+            "يارا؟ 😂 دخلتي بنفسك برجلك! الموقع مش مسؤول عن اللي هيطلع دلوقتي.",
+
+            "يا يارا 😂 عندك فضول غريب جدًا... بس نحترم الشجاعة.",
+
+            "يارا ظهرت 👀 خلاص، محدش يتكلم... الموقع بدأ يشتغل.",
+
+            "يا يارا 😂 كنتِ ممكن تعيشي من غير ما تعرفي الحكم، بس الفضول كسب.",
+
+            "يارا 😂 الموقع حاول يلاقي حاجة يقولها، بس قال نبدأ بهدوء الأول.",
+
+            "يا يارا 😭 إنتِ فعلًا رجعتي تضغطي جملة تانية؟ واضح إن أول واحدة وجعت الفضول.",
+
+            "يارا 😂 تم تسجيل الدخول بنجاح... والثقة أعلى من اللازم كالعادة.",
+
+            "يا يارا 👀 الموقع بيقول: كفاية ضغط على الزر، إحنا فهمنا إنك فضولية.",
+
+            "يارا 😂 رسميًا بقيتي أكتر واحدة عملت للموقع زيارة مفاجئة."
+        ];
+
+
+        /*
+            جمل لأي اسم تاني
+        */
+
+        const normalJokes = [
+
+            "دخلت الموقع بثقة غريبة جدًا 😂",
+
+            "الموقع كان هادي لحد ما ظهرت 😂",
+
+            "واضح إن الفضول هو اللي جابك هنا 👀",
+
+            "عندك ثقة في نفسك محتاجة دراسة 😂",
+
+            "الموقع مش عارف يضحك عليك ولا يشكرك إنك جيت 😂",
+
+            "حاولنا نلاقي حكم مناسب... فقررنا نبدأ بهدوء 😭😂",
+
+            "تم تسجيل دخولك رسميًا في قائمة المشتبه فيهم 😂",
+
+            "واضح إنك داخل تشوف الموقع هيقول عليك إيه بدل ما تسأل أصحابك 😂",
+
+            "الموقع بيقولك: خليك هادي، إحنا لسه بنبدأ 😂",
+
+            "أنت محتاج زرار اسمه: اخرج بسرعة 😂",
+
+            "واضح إنك فتحت الموقع بالغلط... أو يمكن الفضول غلبك 😂",
+
+            "حتى الموقع محتار يقولك إيه 😭😂",
+
+            "كنت هقولك حاجة حلوة، بس خلينا أصحاب 😂",
+
+            "مبروك! وصلت للمرحلة اللي الموقع بقى عنده رأي فيك 😂"
+        ];
+
+
+        function getRandomJoke(list) {
+
+            let random =
+                Math.floor(
+                    Math.random() * list.length
+                );
+
+            return list[random];
+
+        }
+
+
+        function showResult() {
+
+            let input =
+                document.getElementById("name");
+
+            let result =
+                document.getElementById("result");
+
+            let again =
+                document.getElementById("againButton");
+
+            let reset =
+                document.getElementById("resetButton");
+
+
+            let name =
+                input.value.trim();
+
+
+            if (name === "") {
+
+                result.innerText =
+                    "اكتب اسمك الأول يا نجم 😂";
+
+                return;
+
+            }
+
+
+            currentName = name;
+
+
+            result.classList.remove("show");
+
+
+            setTimeout(function() {
+
+                let cleanName =
+                    name.toLowerCase();
+
+
+                let joke;
+
+
+                /*
+                    لو الاسم يارا
+                    نستخدم جمل يارا الخاصة
+                */
+
+                if (
+                    cleanName === "يارا" ||
+                    cleanName === "يارا "
+                ) {
+
+                    joke =
+                        getRandomJoke(yaraJokes);
+
+                }
+
+                else {
+
+                    joke =
+                        "يا " +
+                        currentName +
+                        "، " +
+                        getRandomJoke(normalJokes);
+
+                }
+
+
+                result.innerText = joke;
+
+                result.classList.add("show");
+
+
+                again.style.display = "block";
+
+                reset.style.display = "block";
+
+
+            }, 150);
+
+        }
+
+
+        function anotherJoke() {
+
+            let result =
+                document.getElementById("result");
+
+
+            if (currentName === "") {
+                return;
+            }
+
+
+            result.classList.remove("show");
+
+
+            setTimeout(function() {
+
+                let joke;
+
+
+                if (
+                    currentName.toLowerCase() === "يارا"
+                ) {
+
+                    joke =
+                        getRandomJoke(yaraJokes);
+
+                }
+
+                else {
+
+                    joke =
+                        "يا " +
+                        currentName +
+                        "، " +
+                        getRandomJoke(normalJokes);
+
+                }
+
+
+                result.innerText = joke;
+
+                result.classList.add("show");
+
+
+            }, 150);
+
+        }
+
+
+        function resetGame() {
+
+            let input =
+                document.getElementById("name");
+
+            let result =
+                document.getElementById("result");
+
+            let again =
+                document.getElementById("againButton");
+
+            let reset =
+                document.getElementById("resetButton");
+
+
+            input.value = "";
+
+            result.innerText = "";
+
+            currentName = "";
+
+
+            again.style.display = "none";
+
+            reset.style.display = "none";
+
+            input.focus();
+
+        }
+
+    </script>
+
+</body>
+
+</html>
